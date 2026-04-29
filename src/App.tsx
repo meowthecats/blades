@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AlertTriangle,
   Settings,
@@ -9,6 +9,25 @@ import {
 } from "lucide-react";
 
 export default function App() {
+  const [selectedModel, setSelectedModel] = useState("pro78");
+
+  const compatibilityData = {
+    pro78: {
+      name: "Pro 78 Bladerunner",
+      size: "78mm or 80mm",
+      hardness: "84A to 85A",
+      notes: "Check clearance before installing 80mm wheels to ensure they don't rub against the bottom of the boot. Rollerblade Hydrogen or Undercover urethane provides top-tier rebound."
+    },
+    bravoblade: {
+      name: "Bravoblade GL 72MM",
+      size: "72mm",
+      hardness: "85A to 88A",
+      notes: "Due to the integrated frame, you are strictly limited to 72mm. Seek out aggressive/hockey wheels with a bullet profile to maintain agility."
+    }
+  };
+
+  const selectedData = compatibilityData[selectedModel as keyof typeof compatibilityData];
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col overflow-x-hidden">
       {/* Header Section */}
@@ -141,8 +160,8 @@ export default function App() {
                   recommendations={[
                     "High-Impact Upgrades: Bones Swiss 6, Twincam ILQ-9 Pro, or Wicked ABEC 9 bearings are ideal for taking heavy shock from drops.",
                     "Shields & Spacers: Opt for single rubber-shielded (RS) bearings for easier cleaning. Replace old aluminum spacers with precision steel floating spacers.",
-                    "Cleaning Routine: Clean every 1-2 months (or after rain) using a shaker bottle with citrus solvent or 91%+ isopropyl alcohol.",
-                    "Lubrication: After drying completely, apply a heavier synthetic grease or gel instead of thin speed oil to resist puddles and water washout."
+                    "Cleaning Routine: Remove shields with a pin, load bearings onto a bearing cleaning kit wand (e.g., Bones Bearing Cleaner), submerge in a citrus solvent or 91%+ isopropyl alcohol, and agitate vigorously. Rinse and dry completely.",
+                    "Lubrication: For dry conditions, apply 2 drops of speed oil (re-lube monthly). For wet or dusty urban conditions, pack with heavier synthetic marine grease or gel (re-lube every 3-4 months) to prevent water washout."
                   ]}
                 />
                 <UpgradeCard 
@@ -151,7 +170,7 @@ export default function App() {
                   description="The foams in vintage boots degrade or crumble over time. Modernizing the interior is critical for urban comfort, control, and absorbing impact."
                   recommendations={[
                     "Pro 78: Add a rigid insole (Superfeet Carbon) and use Neoprene ankle booties to mitigate softboot friction.",
-                    "Shell Molding (Bravoblade): Apply a heat gun on low/medium setting 6-8 inches away from pinch points (typically the navicular or malleolus bones). Warm the PU shell until pliable, then use a blunt tool (like the rounded end of a screwdriver) to push the plastic outward from the inside. Hold the pressure until the plastic cools to permanently set the new shape and relieve pressure points.",
+                    "Shell Molding (Bravoblade): Apply a heat gun on a low/medium setting 6-8 inches away from pinch points (typically the navicular or malleolus bones). Slowly warm the PU shell until it becomes pliable, then use a blunt tool (like the rounded end of a screwdriver handle) to push the plastic outward from the inside. Hold the pressure steadily until the plastic cools completely to permanently set the new shape and relieve pressure points for improved comfort.",
                     "Liner Choice - MYFIT: Features heat-moldable, dual-density foam. Extremely plush, adding significant volume to fill out wider 90s shells and block vibrations.",
                     "Liner Choice - Intuition: Uses high-density, closed-cell foam. Thinner and stiffer for ultimate power transfer and longevity, though it requires a longer break-in period.",
                     "Shock Absorption: Insert an Ennui Shock Sleeve or a specialized high-density gel wedge (like the Seba/FR shock absorber) directly beneath the liner inside the shell. This dampens the harsh impact of heavy urban landings on non-suspended vintage boots."
@@ -168,6 +187,38 @@ export default function App() {
                     "Apply blue Loctite (medium strength) to all axle threads to prevent vibrating loose on rough terrain."
                   ]}
                 />
+             </div>
+
+             {/* Compatibility Checker */}
+             <div className="mt-12 bg-white border border-slate-200 p-6 sm:p-8 rounded shadow-sm">
+                <h3 className="text-xl font-bold text-slate-800 uppercase tracking-tighter mb-5">Wheel Compatibility Checker</h3>
+                <div className="flex flex-col sm:flex-row gap-6 items-start">
+                  <div className="w-full sm:w-1/3">
+                    <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2" htmlFor="skate-model">Select Skates</label>
+                    <select 
+                      id="skate-model"
+                      className="w-full p-3 border border-slate-300 rounded bg-slate-50 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow text-slate-800"
+                      value={selectedModel}
+                      onChange={(e) => setSelectedModel(e.target.value)}
+                    >
+                      <option value="pro78">Pro 78 Bladerunner</option>
+                      <option value="bravoblade">Bravoblade GL 72MM</option>
+                    </select>
+                  </div>
+                  <div className="w-full sm:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                     <div className="p-4 bg-slate-100 border border-slate-200 rounded">
+                        <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Compatible Size</span>
+                        <span className="text-lg font-mono text-slate-800">{selectedData.size}</span>
+                     </div>
+                     <div className="p-4 bg-slate-100 border border-slate-200 rounded">
+                        <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Recommend Hardness</span>
+                        <span className="text-lg font-mono text-slate-800">{selectedData.hardness}</span>
+                     </div>
+                     <div className="sm:col-span-2 p-4 bg-blue-50 border border-blue-100 rounded text-sm font-serif text-slate-600 italic">
+                       {selectedData.notes}
+                     </div>
+                  </div>
+                </div>
              </div>
           </div>
         </section>
