@@ -144,6 +144,8 @@ export default function App() {
                 <UpgradeCard 
                   index={0}
                   title="1. Wheel Hardness & Profile"
+                  imageSrc="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=800"
+                  imageAlt="Inline skate wheels on pavement"
                   description="Original 80A-82A wheels will be shredded instantly on rough city asphalt or during T-stops. You need high-rebound, high-durometer urban wheels with specialized PU formulas."
                   recommendations={[
                     "For Pro 78: Use 78mm/80mm at 84A or 85A. Rollerblade Hydrogen or Undercover urethane provides top-tier rebound.",
@@ -156,6 +158,8 @@ export default function App() {
                 <UpgradeCard 
                   index={1}
                   title="2. Bearing Modernization"
+                  imageSrc="https://images.unsplash.com/photo-1627914041189-21b3aee1fe2f?auto=format&fit=crop&q=80&w=800"
+                  imageAlt="Skate bearings"
                   description="Old ABEC 3/5 bearings have likely dried out or rusted. Urban environments require high-impact, dirt-resistant bearings and a consistent maintenance cadence."
                   recommendations={[
                     "High-Impact Upgrades: Bones Swiss 6, Twincam ILQ-9 Pro, or Wicked ABEC 9 bearings are ideal for taking heavy shock from drops.",
@@ -167,18 +171,33 @@ export default function App() {
                 <UpgradeCard 
                   index={2}
                   title="3. Boot & Liner Overhaul"
-                  description="The foams in vintage boots degrade or crumble over time. Modernizing the interior is critical for urban comfort, control, and absorbing impact."
+                  imageSrc="https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?auto=format&fit=crop&q=80&w=800"
+                  imageAlt="Skate boot and liner"
+                  description={
+                    <div className="space-y-4">
+                      <p>The foams in vintage boots degrade or crumble over time. Modernizing the interior is critical for urban comfort, control, and absorbing impact.</p>
+                      <div className="p-4 bg-slate-800 rounded text-slate-200">
+                        <h5 className="font-bold text-[11px] uppercase mb-2 tracking-wider text-orange-400">Bootliner Customization</h5>
+                        <p className="text-xs mb-3">Pairing a high-performance liner with custom insoles dramatically improves power transfer and agility on older skates.</p>
+                        <ul className="text-xs space-y-2">
+                          <li><strong>Insoles:</strong> Use rigid options like Superfeet Carbon for arch support, or Yellow Superfeet for deeper heel-cupping.</li>
+                          <li><strong>MYFIT Liners:</strong> Heat-moldable, dual-density foam. Extremely plush—adds volume to fill out wider 90s shells and blocks vibrations.</li>
+                          <li><strong>Intuition Liners:</strong> High-density, closed-cell foam. Thinner, stiffer, and provides ultimate power transfer. Requires a longer break-in period but offers maximum durability.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  }
                   recommendations={[
-                    "Pro 78: Add a rigid insole (Superfeet Carbon) and use Neoprene ankle booties to mitigate softboot friction.",
+                    "Pro 78: Add a rigid insole and use Neoprene ankle booties to mitigate softboot friction.",
                     "Shell Molding (Bravoblade): Apply a heat gun on a low/medium setting 6-8 inches away from pinch points (typically the navicular or malleolus bones). Slowly warm the PU shell until it becomes pliable, then use a blunt tool (like the rounded end of a screwdriver handle) to push the plastic outward from the inside. Hold the pressure steadily until the plastic cools completely to permanently set the new shape and relieve pressure points for improved comfort.",
-                    "Liner Choice - MYFIT: Features heat-moldable, dual-density foam. Extremely plush, adding significant volume to fill out wider 90s shells and block vibrations.",
-                    "Liner Choice - Intuition: Uses high-density, closed-cell foam. Thinner and stiffer for ultimate power transfer and longevity, though it requires a longer break-in period.",
                     "Shock Absorption: Insert an Ennui Shock Sleeve or a specialized high-density gel wedge (like the Seba/FR shock absorber) directly beneath the liner inside the shell. This dampens the harsh impact of heavy urban landings on non-suspended vintage boots."
                   ]}
                 />
                 <UpgradeCard 
                   index={3}
                   title="4. Hardware & Lacing"
+                  imageSrc="https://images.unsplash.com/photo-1521576402094-caecdbb29848?auto=format&fit=crop&q=80&w=800"
+                  imageAlt="Hardware and laces"
                   description="Urban skating requires maximum heel lock to prevent ankle injuries during sharp maneuvers and jumps."
                   recommendations={[
                     "Replace standard laces with Waxed Laces for superior tension retention.",
@@ -248,12 +267,17 @@ function SpecRow({ icon, label, value }: { icon: React.ReactNode, label: string,
   );
 }
 
-function UpgradeCard({ title, description, recommendations, index = 0 }: { title: string, description: string, recommendations: string[], index?: number }) {
+function UpgradeCard({ title, description, recommendations, index = 0, imageSrc, imageAlt }: { title: string, description: React.ReactNode, recommendations: string[], index?: number, imageSrc?: string, imageAlt?: string }) {
   const isAlt = index % 2 === 1;
   return (
     <div className={`p-6 rounded h-full flex flex-col ${isAlt ? "bg-slate-900 text-white shadow-lg" : "border-2 border-dashed border-slate-300 bg-white text-slate-900"}`}>
+      {imageSrc && (
+        <div className="w-full h-36 mb-4 overflow-hidden rounded border border-slate-200 shrink-0 bg-slate-100">
+          <img src={imageSrc} alt={imageAlt || ""} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" />
+        </div>
+      )}
       <h4 className={`text-[11px] font-bold uppercase tracking-widest mb-3 ${isAlt ? 'text-orange-400' : 'text-blue-600'}`}>{title}</h4>
-      <p className={`text-[13px] mb-5 leading-relaxed font-serif ${isAlt ? 'text-slate-300' : 'text-slate-600'}`}>{description}</p>
+      <div className={`text-[13px] mb-5 leading-relaxed font-serif ${isAlt ? 'text-slate-300' : 'text-slate-600'}`}>{description}</div>
       
       <div className="space-y-3 mt-auto">
          <div className={`text-[10px] font-black uppercase tracking-wider pb-2 border-b ${isAlt ? 'text-slate-500 border-slate-800' : 'text-slate-400 border-slate-200'}`}>Action Items</div>
