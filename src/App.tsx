@@ -151,7 +151,7 @@ export default function App() {
                   description="The foams in vintage boots degrade or crumble over time. Modernizing the interior is critical for urban comfort, control, and absorbing impact."
                   recommendations={[
                     "Pro 78: Add a rigid insole (Superfeet Carbon) and use Neoprene ankle booties to mitigate softboot friction.",
-                    "Shell Molding (Bravoblade): Use a heat gun (low/med heat) to warm pinch points in the rigid PU shell, then gently push out the plastic with a blunt tool (like a screwdriver handle) to customize the fit.",
+                    "Shell Molding (Bravoblade): Apply a heat gun on low/medium setting 6-8 inches away from pinch points (typically the navicular or malleolus bones). Warm the PU shell until pliable, then use a blunt tool (like the rounded end of a screwdriver) to push the plastic outward from the inside. Hold the pressure until the plastic cools to permanently set the new shape and relieve pressure points.",
                     "Liner Choice - MYFIT: Features heat-moldable, dual-density foam. Extremely plush, adding significant volume to fill out wider 90s shells and block vibrations.",
                     "Liner Choice - Intuition: Uses high-density, closed-cell foam. Thinner and stiffer for ultimate power transfer and longevity, though it requires a longer break-in period.",
                     "Shock Absorption: Insert an Ennui Shock Sleeve or a specialized high-density gel wedge (like the Seba/FR shock absorber) directly beneath the liner inside the shell. This dampens the harsh impact of heavy urban landings on non-suspended vintage boots."
