@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   AlertTriangle,
   Settings,
@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   Zap
 } from "lucide-react";
+import BootModel3D from "./components/BootModel3D";
 
 export default function App() {
   const [selectedModel, setSelectedModel] = useState("pro78");
@@ -144,7 +145,7 @@ export default function App() {
                 <UpgradeCard 
                   index={0}
                   title="1. Wheel Hardness & Profile"
-                  imageSrc="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=800"
+                  visualComponent={<WheelIllustration />}
                   imageAlt="Inline skate wheels on pavement"
                   description="Original 80A-82A wheels will be shredded instantly on rough city asphalt or during T-stops. You need high-rebound, high-durometer urban wheels with specialized PU formulas."
                   recommendations={[
@@ -158,9 +159,14 @@ export default function App() {
                 <UpgradeCard 
                   index={1}
                   title="2. Bearing Modernization"
-                  imageSrc="https://images.unsplash.com/photo-1627914041189-21b3aee1fe2f?auto=format&fit=crop&q=80&w=800"
+                  visualComponent={<BearingIllustration />}
                   imageAlt="Skate bearings"
-                  description="Old ABEC 3/5 bearings have likely dried out or rusted. Urban environments require high-impact, dirt-resistant bearings and a consistent maintenance cadence."
+                  description={
+                    <div className="space-y-4">
+                      <p>Old ABEC 3/5 bearings have likely dried out or rusted. Urban environments require high-impact, dirt-resistant bearings and a consistent maintenance cadence.</p>
+                      <BearingMaintenanceGuide />
+                    </div>
+                  }
                   recommendations={[
                     "High-Impact Upgrades: Bones Swiss 6, Twincam ILQ-9 Pro, or Wicked ABEC 9 bearings are ideal for taking heavy shock from drops.",
                     "Shields & Spacers: Opt for single rubber-shielded (RS) bearings for easier cleaning. Replace old aluminum spacers with precision steel floating spacers.",
@@ -171,11 +177,12 @@ export default function App() {
                 <UpgradeCard 
                   index={2}
                   title="3. Boot & Liner Overhaul"
-                  imageSrc="https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?auto=format&fit=crop&q=80&w=800"
+                  visualComponent={<BootModel3D />}
                   imageAlt="Skate boot and liner"
                   description={
                     <div className="space-y-4">
                       <p>The foams in vintage boots degrade or crumble over time. Modernizing the interior is critical for urban comfort, control, and absorbing impact.</p>
+                      <BootFlexDemo />
                       <div className="p-4 bg-slate-800 rounded text-slate-200">
                         <h5 className="font-bold text-[11px] uppercase mb-2 tracking-wider text-orange-400">Bootliner Customization</h5>
                         <p className="text-xs mb-3">Pairing a high-performance liner with custom insoles dramatically improves power transfer and agility on older skates.</p>
@@ -196,14 +203,23 @@ export default function App() {
                 <UpgradeCard 
                   index={3}
                   title="4. Hardware & Lacing"
-                  imageSrc="https://images.unsplash.com/photo-1521576402094-caecdbb29848?auto=format&fit=crop&q=80&w=800"
+                  visualComponent={<HardwareIllustration />}
                   imageAlt="Hardware and laces"
                   description="Urban skating requires maximum heel lock to prevent ankle injuries during sharp maneuvers and jumps."
                   recommendations={[
-                    "Replace standard laces with Waxed Laces for superior tension retention.",
+                    <div key="laces" className="flex flex-col gap-2">
+                       <span>Replace standard laces with Waxed Laces for superior tension retention.</span>
+                       <LacesIllustration />
+                    </div>,
                     "Replace stripped or rusted axles with generic 6mm/8mm inline axles.",
-                    "Bravoblade: Upgrade brittle plastic buckles to modern metal memory buckles (e.g., from FR skates).",
-                    "Apply blue Loctite (medium strength) to all axle threads to prevent vibrating loose on rough terrain."
+                    <div key="buckles" className="flex flex-col gap-2">
+                       <span>Bravoblade: Upgrade brittle plastic buckles to modern metal memory buckles (e.g., from FR skates).</span>
+                       <BuckleIllustration />
+                    </div>,
+                    <div key="loctite" className="flex flex-col gap-2">
+                       <span>Apply blue Loctite (medium strength) to all axle threads to prevent vibrating loose on rough terrain.</span>
+                       <LoctiteIllustration />
+                    </div>
                   ]}
                 />
              </div>
@@ -267,25 +283,306 @@ function SpecRow({ icon, label, value }: { icon: React.ReactNode, label: string,
   );
 }
 
-function UpgradeCard({ title, description, recommendations, index = 0, imageSrc, imageAlt }: { title: string, description: React.ReactNode, recommendations: string[], index?: number, imageSrc?: string, imageAlt?: string }) {
+function BearingMaintenanceGuide() {
+  return (
+    <div className="mt-4 p-4 sm:p-5 bg-slate-800 border border-slate-700 rounded shrink-0 text-slate-200">
+      <h5 className="font-bold text-[11px] uppercase mb-4 tracking-wider text-blue-400">Maintenance Guide: Clean & Lube</h5>
+      <div className="space-y-4">
+        <div className="flex gap-3">
+           <div className="flex-shrink-0 w-7 h-7 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center font-bold text-slate-300 text-[10px]">1</div>
+           <div>
+             <div className="text-[11px] font-bold text-white mb-0.5">Remove Shields</div>
+             <p className="text-[11px] leading-relaxed text-slate-400 font-sans">Use a push-pin or safety pin to carefully pry off the rubber shields.</p>
+           </div>
+        </div>
+        <div className="flex gap-3">
+           <div className="flex-shrink-0 w-7 h-7 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center font-bold text-slate-300 text-[10px]">2</div>
+           <div>
+             <div className="text-[11px] font-bold text-white mb-0.5">Soak & Shake</div>
+             <p className="text-[11px] leading-relaxed text-slate-400 font-sans">Place in a cleaning bottle with citrus cleaner or isopropyl alcohol. Shake vigorously.</p>
+           </div>
+        </div>
+        <div className="flex gap-3">
+           <div className="flex-shrink-0 w-7 h-7 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center font-bold text-slate-300 text-[10px]">3</div>
+           <div>
+             <div className="text-[11px] font-bold text-white mb-0.5">Dry Completely</div>
+             <p className="text-[11px] leading-relaxed text-slate-400 font-sans">Spin the bearings empty and wipe with a lint-free cloth. Air dry on a paper towel.</p>
+           </div>
+        </div>
+        <div className="flex gap-3">
+           <div className="flex-shrink-0 w-7 h-7 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center font-bold text-slate-300 text-[10px]">4</div>
+           <div>
+             <div className="text-[11px] font-bold text-white mb-0.5">Apply Lube</div>
+             <p className="text-[11px] leading-relaxed text-slate-400 font-sans">Apply 2 drops of synthetic skate oil per bearing. Spin to distribute, replace shields.</p>
+           </div>
+        </div>
+      </div>
+      
+      <div className="mt-5 pt-4 border-t border-slate-700">
+        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Required Tools</div>
+        <div className="flex flex-wrap gap-1.5 text-[9px] font-mono uppercase">
+          <span className="px-1.5 py-0.5 bg-slate-900 rounded text-slate-300 border border-slate-700">Push-pin</span>
+          <span className="px-1.5 py-0.5 bg-slate-900 rounded text-slate-300 border border-slate-700">Citrus Cleaner</span>
+          <span className="px-1.5 py-0.5 bg-slate-900 rounded text-slate-300 border border-slate-700">Wash Bottle</span>
+          <span className="px-1.5 py-0.5 bg-slate-900 rounded text-slate-300 border border-slate-700">Skate Oil</span>
+          <span className="px-1.5 py-0.5 bg-slate-900 rounded text-slate-300 border border-slate-700">Paper Towels</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+let audioCtx: AudioContext | null = null;
+const initAudio = () => {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    audioCtx = new AudioContextClass();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+};
+
+const playCreak = (intensity: number) => {
+  try {
+    const ctx = initAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    // Low frequency rumble for creaking
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(60 + (intensity * 0.5), ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.05);
+    
+    // Subtle volume mapping based on flex intensity
+    const maxGain = 0.03 + (intensity / 100) * 0.05;
+    gain.gain.setValueAtTime(maxGain, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.05);
+  } catch (e) {
+    // Graceful fail for missing audio support
+  }
+};
+
+const playSnap = () => {
+  try {
+    const ctx = initAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    // Sharp crack sound
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(800, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.1);
+    
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  } catch (e) {
+    // Graceful fail for missing audio support
+  }
+};
+
+function BootFlexDemo() {
+  const [flexAmount, setFlexAmount] = useState(0);
+  const lastSoundFlex = useRef(0);
+  const isSafe = flexAmount < 80;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Number(e.target.value);
+    const wasSafe = flexAmount < 80;
+    
+    setFlexAmount(val);
+
+    // Audio & Haptics Feedback
+    if (wasSafe && val >= 80) { // Transition to brittle
+      playSnap();
+      if ('vibrate' in navigator) navigator.vibrate([40, 50, 40]);
+    } else if (Math.abs(val - lastSoundFlex.current) > 2 && val < 80) {
+      // Periodic creak while flexing safely
+      playCreak(val);
+      if ('vibrate' in navigator) navigator.vibrate(10);
+      lastSoundFlex.current = val;
+    }
+  };
+
+  return (
+    <div className="p-4 sm:p-5 bg-slate-50 border border-slate-200 rounded shrink-0 text-slate-800">
+      <h5 className="font-bold text-[11px] uppercase mb-1 tracking-wider text-slate-700">Flex Test Simulation (Interactive)</h5>
+      <p className="text-xs text-slate-500 mb-4 font-serif">Drag the slider to test PU shell flexibility. Hear and feel the plastic stress. If the plastic feels rigid and resists heavy flexing, avoid high impact.</p>
+      
+      <div className="relative h-24 mb-4 flex items-center justify-center bg-slate-100 rounded border border-slate-200 overflow-hidden">
+        {/* Abstract Boot representation */}
+        <div 
+          className={`w-24 border-4 rounded-t-xl rounded-bl-xl transition-all duration-100 ${isSafe ? 'border-blue-500' : 'border-red-500'}`}
+          style={{ 
+            height: '4rem',
+            transform: `skewX(-${flexAmount * 0.2}deg) scaleY(${1 - flexAmount * 0.002})`,
+            transformOrigin: 'bottom center',
+            borderBottomRightRadius: '2rem'
+          }}
+        >
+          <div className="w-full h-full flex items-center justify-center">
+             <span className="text-[10px] font-black uppercase text-slate-400">{isSafe ? 'Pliable' : 'Brittle!'}</span>
+          </div>
+        </div>
+      </div>
+
+      <input 
+        type="range" 
+        min="0" 
+        max="100" 
+        value={flexAmount} 
+        onChange={handleChange}
+        className="w-full accent-blue-600 mb-2"
+      />
+      <div className="flex justify-between text-[10px] uppercase font-bold text-slate-400">
+        <span>Rest</span>
+        <span>Extreme Flex</span>
+      </div>
+    </div>
+  );
+}
+
+function WheelIllustration() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full text-slate-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" strokeWidth="2">
+      {/* Front View */}
+      <circle cx="35" cy="50" r="30" />
+      <circle cx="35" cy="50" r="12" />
+      <circle cx="35" cy="50" r="4" fill="currentColor" />
+      <path d="M35 20 L35 38" />
+      <path d="M35 62 L35 80" />
+      <path d="M20 50 L23 50" />
+      <path d="M47 50 L50 50" />
+      
+      {/* Profile View (Bullet) */}
+      <path d="M75 20 C 85 20, 90 40, 90 50 C 90 60, 85 80, 75 80 L 70 80 C 65 80, 65 20, 70 20 Z" />
+      <line x1="75" y1="20" x2="75" y2="80" strokeDasharray="2 2" opacity="0.5" />
+    </svg>
+  );
+}
+
+function BearingIllustration() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full text-slate-400 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="50" cy="50" r="35" strokeWidth="3" />
+      <circle cx="50" cy="50" r="15" strokeWidth="3" />
+      {/* 7 ball bearings */}
+      {[0, 1, 2, 3, 4, 5, 6].map(i => {
+        const angle = (i * Math.PI * 2) / 7;
+        const x = 50 + 25 * Math.cos(angle);
+        const y = 50 + 25 * Math.sin(angle);
+        return <circle key={i} cx={x} cy={y} r="4" fill="currentColor" />;
+      })}
+    </svg>
+  );
+}
+
+function BootIllustration() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full text-slate-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+      <path d="M30,10 C40,10 40,20 40,30 C45,40 50,45 60,50 C70,55 80,60 85,75 C85,85 80,90 70,90 L30,90 C25,90 20,85 20,70 L20,10 Z" strokeWidth="3" />
+      <path d="M30,5 C40,5 35,20 35,30 C40,40 45,45 55,50 M25,5 L25,30" stroke="#f97316" />
+      <polygon points="20,75 35,75 35,90 20,90" fill="#f97316" opacity="0.3" stroke="none"/>
+    </svg>
+  );
+}
+
+function HardwareIllustration() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full text-slate-400 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+      {/* Axle screw */}
+      <rect x="20" y="45" width="60" height="10" rx="2" />
+      <rect x="15" y="40" width="10" height="20" rx="1" fill="currentColor" />
+      {/* Hex key cutout */}
+      <polygon points="12,47 16,45 20,47 20,53 16,55 12,53" fill="none" stroke="white" strokeWidth="1" />
+      <rect x="75" y="42" width="10" height="16" rx="1" />
+      <line x1="75" y1="45" x2="85" y2="45" />
+      <line x1="75" y1="50" x2="85" y2="50" />
+      <line x1="75" y1="55" x2="85" y2="55" />
+    </svg>
+  );
+}
+
+function LacesIllustration() {
+  return (
+    <div className="h-24 w-full bg-slate-800 rounded border border-slate-700 flex items-center justify-center group-hover:bg-slate-700 transition-colors">
+      <svg viewBox="0 0 100 100" className="h-16 w-16 text-slate-400" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none">
+        <path d="M 30,20 C 50,40 50,60 70,80" />
+        <path d="M 70,20 C 50,40 50,60 30,80" />
+        <circle cx="30" cy="20" r="3" fill="currentColor" />
+        <circle cx="70" cy="20" r="3" fill="currentColor" />
+        <circle cx="30" cy="80" r="3" fill="currentColor" />
+        <circle cx="70" cy="80" r="3" fill="currentColor" />
+      </svg>
+    </div>
+  );
+}
+
+function BuckleIllustration() {
+  return (
+    <div className="h-24 w-full bg-slate-800 rounded border border-slate-700 flex items-center justify-center group-hover:bg-slate-700 transition-colors">
+      <svg viewBox="0 0 100 100" className="h-16 w-16 text-slate-400" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" fill="none">
+        <rect x="20" y="30" width="30" height="40" rx="3" />
+        <rect x="50" y="40" width="30" height="20" rx="1" fill="currentColor" />
+        <line x1="25" y1="40" x2="45" y2="40" />
+        <line x1="25" y1="50" x2="45" y2="50" />
+        <line x1="25" y1="60" x2="45" y2="60" />
+      </svg>
+    </div>
+  );
+}
+
+function LoctiteIllustration() {
+  return (
+    <div className="h-24 w-full bg-slate-800 rounded border border-slate-700 flex items-center justify-center group-hover:bg-slate-700 transition-colors">
+      <svg viewBox="0 0 100 100" className="h-16 w-16 text-slate-400" stroke="currentColor" strokeLinejoin="round" fill="none">
+        <path d="M 40,20 L 60,20 L 55,40 L 65,90 L 35,90 L 45,40 Z" strokeWidth="3" />
+        <rect x="42" y="10" width="16" height="10" fill="currentColor" />
+        <path d="M 50,95 C 45,100 55,100 50,95Z" fill="#06b6d4" stroke="#06b6d4" />
+        <line x1="45" y1="60" x2="55" y2="60" strokeWidth="2" />
+        <line x1="43" y1="70" x2="57" y2="70" strokeWidth="2" />
+      </svg>
+    </div>
+  );
+}
+
+function UpgradeCard({ title, description, recommendations, index = 0, imageSrc, imageAlt, visualComponent }: { title: string, description: React.ReactNode, recommendations: React.ReactNode[], index?: number, imageSrc?: string, imageAlt?: string, visualComponent?: React.ReactNode }) {
   const isAlt = index % 2 === 1;
   return (
-    <div className={`p-6 rounded h-full flex flex-col ${isAlt ? "bg-slate-900 text-white shadow-lg" : "border-2 border-dashed border-slate-300 bg-white text-slate-900"}`}>
-      {imageSrc && (
-        <div className="w-full h-36 mb-4 overflow-hidden rounded border border-slate-200 shrink-0 bg-slate-100">
-          <img src={imageSrc} alt={imageAlt || ""} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" />
+    <div className={`p-5 sm:p-6 xl:p-8 rounded h-full flex flex-col group ${isAlt ? "bg-slate-900 text-white shadow-lg" : "border-2 border-dashed border-slate-300 bg-white text-slate-900"}`}>
+      {imageSrc && !visualComponent && (
+        <div className="w-full h-48 sm:h-40 lg:h-48 mb-5 sm:mb-6 overflow-hidden rounded border border-slate-200 shrink-0 bg-slate-100">
+          <img src={imageSrc} alt={imageAlt || ""} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
         </div>
       )}
-      <h4 className={`text-[11px] font-bold uppercase tracking-widest mb-3 ${isAlt ? 'text-orange-400' : 'text-blue-600'}`}>{title}</h4>
-      <div className={`text-[13px] mb-5 leading-relaxed font-serif ${isAlt ? 'text-slate-300' : 'text-slate-600'}`}>{description}</div>
+      {visualComponent && (
+        <div className={`w-full h-48 sm:h-40 lg:h-48 mb-5 sm:mb-6 rounded shrink-0 flex items-center justify-center p-6 transition-all duration-300 ${isAlt ? 'bg-slate-800 border border-slate-700' : 'bg-slate-50 border border-slate-200'}`}>
+          {visualComponent}
+        </div>
+      )}
+      <h4 className={`text-xs sm:text-[13px] font-bold uppercase tracking-widest mb-3 transition-colors ${isAlt ? 'text-orange-400 group-hover:text-orange-300' : 'text-blue-600 group-hover:text-blue-700'}`}>{title}</h4>
+      <div className={`text-sm sm:text-[15px] mb-6 leading-relaxed font-serif ${isAlt ? 'text-slate-300' : 'text-slate-600'}`}>{description}</div>
       
-      <div className="space-y-3 mt-auto">
-         <div className={`text-[10px] font-black uppercase tracking-wider pb-2 border-b ${isAlt ? 'text-slate-500 border-slate-800' : 'text-slate-400 border-slate-200'}`}>Action Items</div>
-         <ul className="space-y-2 text-xs font-mono">
+      <div className="space-y-4 mt-auto">
+         <div className={`text-[10px] sm:text-[11px] font-black uppercase tracking-wider pb-2 border-b ${isAlt ? 'text-slate-500 border-slate-800' : 'text-slate-400 border-slate-200'}`}>Action Items</div>
+         <ul className="space-y-2.5 text-[11px] sm:text-xs font-mono">
            {recommendations.map((rec, i) => (
-             <li key={i} className="flex gap-2 items-start">
+             <li key={i} className="flex gap-2.5 items-start">
                <div className={`w-1.5 h-1.5 mt-1 shrink-0 ${isAlt ? 'bg-orange-500' : 'bg-blue-500'}`}></div>
-               <span className={`leading-snug ${isAlt ? 'text-slate-400' : 'text-slate-700'}`}>{rec}</span>
+               <div className={`leading-snug w-full ${isAlt ? 'text-slate-400' : 'text-slate-700'}`}>{rec}</div>
              </li>
            ))}
          </ul>
